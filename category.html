@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redes Sociais</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1 id="categoriaTitulo">Redes Sociais</h1>
+    <button onclick="voltar()">⬅ Voltar</button>
+  </header>
+
+  <main id="socialList" class="categories">
+    <!-- Redes sociais serão inseridas via JS -->
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    const categorias = {
+      gerais: [
+        {nome:"Facebook", app:"fb://profile", web:"https://www.facebook.com", play:"https://play.google.com/store/apps/details?id=com.facebook.katana"},
+        {nome:"Instagram", app:"instagram://user?username=instagram", web:"https://www.instagram.com", play:"https://play.google.com/store/apps/details?id=com.instagram.android"},
+        {nome:"TikTok", app:"snssdk1233://", web:"https://www.tiktok.com", play:"https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically"}
+      ],
+      profissionais: [
+        {nome:"LinkedIn", app:"linkedin://", web:"https://www.linkedin.com", play:"https://play.google.com/store/apps/details?id=com.linkedin.android"},
+        {nome:"Xing", app:"xing://", web:"https://www.xing.com", play:"https://play.google.com/store/apps/details?id=com.xing.android"}
+      ],
+      videos: [
+        {nome:"YouTube", app:"vnd.youtube://", web:"https://www.youtube.com", play:"https://play.google.com/store/apps/details?id=com.google.android.youtube"},
+        {nome:"Twitch", app:"twitch://", web:"https://www.twitch.tv", play:"https://play.google.com/store/apps/details?id=tv.twitch.android.app"}
+      ],
+      fotos: [
+        {nome:"Pinterest", app:"pinterest://", web:"https://www.pinterest.com", play:"https://play.google.com/store/apps/details?id=com.pinterest"}
+      ],
+      mensagens: [
+        {nome:"WhatsApp", app:"whatsapp://", web:"https://web.whatsapp.com", play:"https://play.google.com/store/apps/details?id=com.whatsapp"},
+        {nome:"Telegram", app:"tg://", web:"https://web.telegram.org", play:"https://play.google.com/store/apps/details?id=org.telegram.messenger"}
+      ],
+      microblogging: [
+        {nome:"Twitter", app:"twitter://", web:"https://twitter.com", play:"https://play.google.com/store/apps/details?id=com.twitter.android"}
+      ],
+      nichos: [
+        {nome:"Strava", app:"strava://", web:"https://www.strava.com", play:"https://play.google.com/store/apps/details?id=com.strava"}
+      ],
+      regionais: [
+        {nome:"Weibo", app:"sinaweibo://", web:"https://weibo.com", play:"https://play.google.com/store/apps/details?id=com.sina.weibo"}
+      ]
+    };
+
+    // Pega o parâmetro da categoria da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const cat = urlParams.get('cat') || 'gerais';
+
+    document.getElementById('categoriaTitulo').innerText = cat.charAt(0).toUpperCase() + cat.slice(1);
+
+    const socialList = document.getElementById('socialList');
+    categorias[cat].forEach(social => {
+      const div = document.createElement('div');
+      div.className = 'category';
+      div.innerText = social.nome;
+      div.onclick = () => abrirRede(social);
+      socialList.appendChild(div);
+    });
+
+    function abrirRede(social) {
+      // Tenta abrir app, senão Play Store, senão web
+      const appLink = social.app;
+      const playLink = social.play;
+      const webLink = social.web;
+
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = appLink;
+      document.body.appendChild(iframe);
+
+      setTimeout(() => {
+        window.open(playLink, '_blank') || window.open(webLink, '_blank');
+        document.body.removeChild(iframe);
+      }, 500);
+    }
+
+    function voltar() {
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
