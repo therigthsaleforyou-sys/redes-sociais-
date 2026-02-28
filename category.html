@@ -16,6 +16,7 @@
 
   <script src="script.js"></script>
   <script>
+    // Redes sociais por categoria
     const categorias = {
       gerais: [
         {nome:"Facebook", app:"fb://profile", web:"https://www.facebook.com", play:"https://play.google.com/store/apps/details?id=com.facebook.katana"},
@@ -33,11 +34,13 @@
       ]
     };
 
+    // Pega categoria do URL
     const urlParams = new URLSearchParams(window.location.search);
     const cat = urlParams.get('cat') || 'gerais';
     document.getElementById('categoriaTitulo').innerText = cat.charAt(0).toUpperCase() + cat.slice(1);
 
     const socialList = document.getElementById('socialList');
+
     categorias[cat].forEach(social => {
       const div = document.createElement('div');
       div.className = 'category';
@@ -46,26 +49,36 @@
       socialList.appendChild(div);
     });
 
+    // Função principal
     function abrirRede(social) {
       const appLink = social.app;
       const webLink = social.web;
       const playLink = social.play;
+      const key = `socialHub_${social.nome}`; // memoriza escolha
+
+      // Se já escolheu browser antes, abre direto
+      if (sessionStorage.getItem(key) === 'browser') {
+        window.location.href = webLink;
+        return;
+      }
 
       const now = Date.now();
-      const timeout = 1500; // delay antes de perguntar
+      const timeout = 1500;
 
-      // Tenta abrir a app via location
+      // Tenta abrir app
       window.location = appLink;
 
-      // Depois do timeout, mostra prompt
+      // Após delay, se não abriu, mostra prompt
       setTimeout(() => {
         const delta = Date.now() - now;
         if (delta < timeout + 200) {
-          const escolha = confirm("App não detectada. Abrir no browser? Clique 'Cancelar' para instalar na Play Store.");
+          const escolha = confirm("App não detectada. Clique 'OK' para abrir no browser ou 'Cancelar' para instalar na Play Store.");
           if (escolha) {
+            sessionStorage.setItem(key, 'browser');
             window.location.href = webLink;
           } else {
-            window.location.href = playLink;
+            // Volta para index se não quiser instalar
+            window.location.href = 'index.html';
           }
         }
       }, timeout);
