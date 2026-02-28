@@ -68,20 +68,17 @@
       const webLink = social.web;
       const playLink = social.play;
 
-      const start = Date.now();
-      const timeout = 1500;
+      const now = Date.now();
+      const timeout = 2000;
 
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = appLink;
-      document.body.appendChild(iframe);
+      // Tenta abrir a app imediatamente
+      window.location = appLink;
 
+      // Se não abrir, mostrar popup depois de delay
       setTimeout(() => {
-        const delta = Date.now() - start;
-        document.body.removeChild(iframe);
-
-        if (delta < timeout + 100) {
-          const escolha = confirm("App não encontrada. Quer abrir no browser? Clique 'Cancelar' para instalar a app na Play Store.");
+        const delta = Date.now() - now;
+        if (delta < timeout + 200) {
+          const escolha = confirm("App não encontrada. Quer abrir no browser? Clique 'Cancelar' para instalar na Play Store.");
           if (escolha) {
             window.location.href = webLink;
           } else {
