@@ -16,25 +16,47 @@
 
   <script src="script.js"></script>
   <script>
-    // Redes sociais por categoria
+    // Todas as redes sociais por categoria
     const categorias = {
       gerais: [
         {nome:"Facebook", app:"fb://profile", web:"https://www.facebook.com", play:"https://play.google.com/store/apps/details?id=com.facebook.katana"},
         {nome:"Instagram", app:"instagram://user?username=instagram", web:"https://www.instagram.com", play:"https://play.google.com/store/apps/details?id=com.instagram.android"},
-        {nome:"TikTok", app:"snssdk1233://", web:"https://www.tiktok.com", play:"https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically"}
+        {nome:"TikTok", app:"snssdk1233://", web:"https://www.tiktok.com", play:"https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically"},
+        {nome:"Reddit", app:"reddit://", web:"https://www.reddit.com", play:"https://play.google.com/store/apps/details?id=com.reddit.frontpage"}
       ],
       profissionais: [
-        {nome:"LinkedIn", app:"linkedin://", web:"https://www.linkedin.com", play:"https://play.google.com/store/apps/details?id=com.linkedin.android"}
+        {nome:"LinkedIn", app:"linkedin://", web:"https://www.linkedin.com", play:"https://play.google.com/store/apps/details?id=com.linkedin.android"},
+        {nome:"Xing", app:"xing://", web:"https://www.xing.com", play:"https://play.google.com/store/apps/details?id=com.xing.android"}
       ],
       videos: [
-        {nome:"YouTube", app:"vnd.youtube://", web:"https://www.youtube.com", play:"https://play.google.com/store/apps/details?id=com.google.android.youtube"}
+        {nome:"YouTube", app:"vnd.youtube://", web:"https://www.youtube.com", play:"https://play.google.com/store/apps/details?id=com.google.android.youtube"},
+        {nome:"Twitch", app:"twitch://", web:"https://www.twitch.tv", play:"https://play.google.com/store/apps/details?id=tv.twitch.android.app"},
+        {nome:"Vimeo", app:"vimeo://", web:"https://vimeo.com", play:"https://play.google.com/store/apps/details?id=com.vimeo.android.videoapp"}
+      ],
+      fotos: [
+        {nome:"Pinterest", app:"pinterest://", web:"https://www.pinterest.com", play:"https://play.google.com/store/apps/details?id=com.pinterest"},
+        {nome:"Flickr", app:"flickr://", web:"https://www.flickr.com", play:"https://play.google.com/store/apps/details?id=com.yahoo.mobile.client.android.flickr"}
       ],
       mensagens: [
-        {nome:"WhatsApp", app:"whatsapp://", web:"https://web.whatsapp.com", play:"https://play.google.com/store/apps/details?id=com.whatsapp"}
+        {nome:"WhatsApp", app:"whatsapp://", web:"https://web.whatsapp.com", play:"https://play.google.com/store/apps/details?id=com.whatsapp"},
+        {nome:"Telegram", app:"tg://", web:"https://web.telegram.org", play:"https://play.google.com/store/apps/details?id=org.telegram.messenger"},
+        {nome:"Messenger", app:"fb-messenger://", web:"https://www.messenger.com", play:"https://play.google.com/store/apps/details?id=com.facebook.orca"}
+      ],
+      microblogging: [
+        {nome:"Twitter", app:"twitter://", web:"https://twitter.com", play:"https://play.google.com/store/apps/details?id=com.twitter.android"},
+        {nome:"Mastodon", app:"mastodon://", web:"https://mastodon.social", play:"https://play.google.com/store/apps/details?id=org.joinmastodon.android"}
+      ],
+      nichos: [
+        {nome:"Strava", app:"strava://", web:"https://www.strava.com", play:"https://play.google.com/store/apps/details?id=com.strava"},
+        {nome:"Goodreads", app:"goodreads://", web:"https://www.goodreads.com", play:"https://play.google.com/store/apps/details?id=com.goodreads"}
+      ],
+      regionais: [
+        {nome:"Weibo", app:"sinaweibo://", web:"https://weibo.com", play:"https://play.google.com/store/apps/details?id=com.sina.weibo"},
+        {nome:"VK", app:"vk://", web:"https://vk.com", play:"https://play.google.com/store/apps/details?id=com.vkontakte.android"}
       ]
     };
 
-    // Pega categoria do URL
+    // Categoria do URL
     const urlParams = new URLSearchParams(window.location.search);
     const cat = urlParams.get('cat') || 'gerais';
     document.getElementById('categoriaTitulo').innerText = cat.charAt(0).toUpperCase() + cat.slice(1);
@@ -49,14 +71,14 @@
       socialList.appendChild(div);
     });
 
-    // Função principal
+    // Função para abrir rede social com memorizar escolha browser
     function abrirRede(social) {
       const appLink = social.app;
       const webLink = social.web;
       const playLink = social.play;
-      const key = `socialHub_${social.nome}`; // memoriza escolha
+      const key = `socialHub_${social.nome}`;
 
-      // Se já escolheu browser antes, abre direto
+      // Se já escolheu browser, abre direto
       if (sessionStorage.getItem(key) === 'browser') {
         window.location.href = webLink;
         return;
@@ -65,19 +87,18 @@
       const now = Date.now();
       const timeout = 1500;
 
-      // Tenta abrir app
+      // Tenta abrir app via deep link
       window.location = appLink;
 
-      // Após delay, se não abriu, mostra prompt
+      // Se não abrir, mostra prompt
       setTimeout(() => {
         const delta = Date.now() - now;
         if (delta < timeout + 200) {
-          const escolha = confirm("App não detectada. Clique 'OK' para abrir no browser ou 'Cancelar' para instalar na Play Store.");
+          const escolha = confirm("App não detectada. Clique 'OK' para abrir no browser ou 'Cancelar' para voltar à página inicial.");
           if (escolha) {
             sessionStorage.setItem(key, 'browser');
             window.location.href = webLink;
           } else {
-            // Volta para index se não quiser instalar
             window.location.href = 'index.html';
           }
         }
