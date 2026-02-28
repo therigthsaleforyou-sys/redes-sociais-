@@ -50,10 +50,8 @@
       ]
     };
 
-    // Pega o parâmetro da categoria da URL
     const urlParams = new URLSearchParams(window.location.search);
     const cat = urlParams.get('cat') || 'gerais';
-
     document.getElementById('categoriaTitulo').innerText = cat.charAt(0).toUpperCase() + cat.slice(1);
 
     const socialList = document.getElementById('socialList');
@@ -66,10 +64,12 @@
     });
 
     function abrirRede(social) {
-      // Tenta abrir app, senão Play Store, senão web
       const appLink = social.app;
-      const playLink = social.play;
       const webLink = social.web;
+      const playLink = social.play;
+
+      const start = Date.now();
+      const timeout = 1500;
 
       const iframe = document.createElement('iframe');
       iframe.style.display = 'none';
@@ -77,9 +77,18 @@
       document.body.appendChild(iframe);
 
       setTimeout(() => {
-        window.open(playLink, '_blank') || window.open(webLink, '_blank');
+        const delta = Date.now() - start;
         document.body.removeChild(iframe);
-      }, 500);
+
+        if (delta < timeout + 100) {
+          const escolha = confirm("App não encontrada. Quer abrir no browser? Clique 'Cancelar' para instalar a app na Play Store.");
+          if (escolha) {
+            window.location.href = webLink;
+          } else {
+            window.location.href = playLink;
+          }
+        }
+      }, timeout);
     }
 
     function voltar() {
