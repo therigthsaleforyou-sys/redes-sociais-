@@ -12,9 +12,7 @@
     <button onclick="voltar()">⬅ Voltar</button>
   </header>
 
-  <main id="socialList" class="categories">
-    <!-- Redes sociais serão inseridas via JS -->
-  </main>
+  <main id="socialList" class="categories"></main>
 
   <script src="script.js"></script>
   <script>
@@ -25,28 +23,13 @@
         {nome:"TikTok", app:"snssdk1233://", web:"https://www.tiktok.com", play:"https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically"}
       ],
       profissionais: [
-        {nome:"LinkedIn", app:"linkedin://", web:"https://www.linkedin.com", play:"https://play.google.com/store/apps/details?id=com.linkedin.android"},
-        {nome:"Xing", app:"xing://", web:"https://www.xing.com", play:"https://play.google.com/store/apps/details?id=com.xing.android"}
+        {nome:"LinkedIn", app:"linkedin://", web:"https://www.linkedin.com", play:"https://play.google.com/store/apps/details?id=com.linkedin.android"}
       ],
       videos: [
-        {nome:"YouTube", app:"vnd.youtube://", web:"https://www.youtube.com", play:"https://play.google.com/store/apps/details?id=com.google.android.youtube"},
-        {nome:"Twitch", app:"twitch://", web:"https://www.twitch.tv", play:"https://play.google.com/store/apps/details?id=tv.twitch.android.app"}
-      ],
-      fotos: [
-        {nome:"Pinterest", app:"pinterest://", web:"https://www.pinterest.com", play:"https://play.google.com/store/apps/details?id=com.pinterest"}
+        {nome:"YouTube", app:"vnd.youtube://", web:"https://www.youtube.com", play:"https://play.google.com/store/apps/details?id=com.google.android.youtube"}
       ],
       mensagens: [
-        {nome:"WhatsApp", app:"whatsapp://", web:"https://web.whatsapp.com", play:"https://play.google.com/store/apps/details?id=com.whatsapp"},
-        {nome:"Telegram", app:"tg://", web:"https://web.telegram.org", play:"https://play.google.com/store/apps/details?id=org.telegram.messenger"}
-      ],
-      microblogging: [
-        {nome:"Twitter", app:"twitter://", web:"https://twitter.com", play:"https://play.google.com/store/apps/details?id=com.twitter.android"}
-      ],
-      nichos: [
-        {nome:"Strava", app:"strava://", web:"https://www.strava.com", play:"https://play.google.com/store/apps/details?id=com.strava"}
-      ],
-      regionais: [
-        {nome:"Weibo", app:"sinaweibo://", web:"https://weibo.com", play:"https://play.google.com/store/apps/details?id=com.sina.weibo"}
+        {nome:"WhatsApp", app:"whatsapp://", web:"https://web.whatsapp.com", play:"https://play.google.com/store/apps/details?id=com.whatsapp"}
       ]
     };
 
@@ -69,16 +52,16 @@
       const playLink = social.play;
 
       const now = Date.now();
-      const timeout = 2000;
+      const timeout = 1500; // delay antes de perguntar
 
-      // Tenta abrir a app imediatamente
+      // Tenta abrir a app via location
       window.location = appLink;
 
-      // Se não abrir, mostrar popup depois de delay
+      // Depois do timeout, mostra prompt
       setTimeout(() => {
         const delta = Date.now() - now;
         if (delta < timeout + 200) {
-          const escolha = confirm("App não encontrada. Quer abrir no browser? Clique 'Cancelar' para instalar na Play Store.");
+          const escolha = confirm("App não detectada. Abrir no browser? Clique 'Cancelar' para instalar na Play Store.");
           if (escolha) {
             window.location.href = webLink;
           } else {
