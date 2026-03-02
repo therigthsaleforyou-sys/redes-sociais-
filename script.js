@@ -3,7 +3,7 @@
 ====================== */
 function atualizarDataHora() {
   const agora = new Date();
-  document.getElementById("dataHora").innerText =
+  document.getElementById("dataHora")?.innerText =
     agora.toLocaleDateString("pt-PT") + " " +
     agora.toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" });
 }
@@ -29,49 +29,39 @@ if (navigator.geolocation) {
       data.address.village ||
       "";
 
-    document.getElementById("cidade").innerText = cidade;
+    const cidadeEl = document.getElementById("cidade");
+    if(cidadeEl) cidadeEl.innerText = cidade;
   });
 }
 
 /* ======================
-   CONFIG APPS
+   APPS CONFIG
 ====================== */
 const apps = {
-  instagram: {
-    scheme: "instagram://",
-    web: "https://www.instagram.com",
-    store: "https://play.google.com/store/apps/details?id=com.instagram.android"
-  },
-  tiktok: {
-    scheme: "tiktok://",
-    web: "https://www.tiktok.com",
-    store: "https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically"
-  },
-  threads: {
-    scheme: "threads://",
-    web: "https://www.threads.net",
-    store: "https://play.google.com/store/apps/details?id=com.instagram.barcelona"
-  }
+  instagram: { nome: "Instagram", app:"instagram://", web:"https://www.instagram.com", store:"https://play.google.com/store/apps/details?id=com.instagram.android" },
+  tiktok:    { nome: "TikTok",    app:"tiktok://",    web:"https://www.tiktok.com", store:"https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically" },
+  threads:   { nome: "Threads",   app:"threads://",   web:"https://www.threads.net", store:"https://play.google.com/store/apps/details?id=com.instagram.barcelona" },
+  whatsapp:  { nome: "WhatsApp",  app:"whatsapp://",  web:"https://web.whatsapp.com", store:"https://play.google.com/store/apps/details?id=com.whatsapp" },
+  telegram:  { nome: "Telegram",  app:"tg://",        web:"https://web.telegram.org", store:"https://play.google.com/store/apps/details?id=org.telegram.messenger" },
+  youtube:   { nome: "YouTube",   app:"youtube://",   web:"https://www.youtube.com", store:"https://play.google.com/store/apps/details?id=com.google.android.youtube" }
 };
 
+/* ======================
+   ABRIR APP COM MODAL
+====================== */
 let appAtual = null;
 
-/* ======================
-   ABRIR APP
-====================== */
-function abrirApp(nome) {
-  appAtual = apps[nome];
+function abrirApp(social) {
+  appAtual = social;
   let abriu = false;
 
   const iframe = document.createElement("iframe");
   iframe.style.display = "none";
-  iframe.src = appAtual.scheme;
+  iframe.src = social.app;
   document.body.appendChild(iframe);
 
   const timeout = setTimeout(() => {
-    if (!abriu) {
-      mostrarModal();
-    }
+    if (!abriu) mostrarModal();
   }, 1200);
 
   window.addEventListener("blur", () => {
@@ -80,19 +70,16 @@ function abrirApp(nome) {
   }, { once: true });
 }
 
-/* ======================
-   MODAL
-====================== */
 function mostrarModal() {
-  document.getElementById("modal").classList.remove("hidden");
+  const modal = document.getElementById("modalApp");
+  modal.classList.remove("hidden");
 
-  document.getElementById("btnPlayStore").onclick = () => {
-    window.location.href = appAtual.store;
-  };
+  document.getElementById("btnPlayStore").onclick = () => window.location.href = appAtual.store;
+  document.getElementById("btnBrowser").onclick   = () => window.location.href = appAtual.web;
+}
 
-  document.getElementById("btnBrowser").onclick = () => {
-    window.location.href = appAtual.web;
-  };
+function fecharModal() {
+  document.getElementById("modalApp").classList.add("hidden");
 }
 
 /* ======================
