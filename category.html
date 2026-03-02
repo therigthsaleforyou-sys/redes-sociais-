@@ -1,53 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Categoria</title>
+  <title>Categorias</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <h1 id="tituloCategoria">Categoria</h1>
-</header>
+<h1 data-i18n="categories"></h1>
 
-<main id="socialList" class="grid">
-  <!-- Botões carregados via script.js -->
-</main>
+<button class="btn">Facebook</button>
+<button class="btn">X (Twitter)</button>
+<button class="btn">LinkedIn</button>
 
-<!-- MODAL SEMPRE PRESENTE -->
-<div id="modalApp" class="modal-inativo">
-  <div class="modal-box">
-    <h3>App não instalada</h3>
-    <p>Como queres continuar?</p>
-    <div class="btn-grid">
-      <button id="btnPlayStore">Play Store</button>
-      <button id="btnBrowser">Browser</button>
-    </div>
-  </div>
-</div>
+<button class="btn" onclick="history.back()">
+  ← <span data-i18n="back"></span>
+</button>
 
+<script src="lang.js"></script>
 <script src="script.js"></script>
-<script>
-/* Categoria dinâmica */
-const params = new URLSearchParams(window.location.search);
-const categoria = params.get("cat") || "gerais";
-document.getElementById("tituloCategoria").innerText = categoria.toUpperCase();
-
-const socialList = document.getElementById("socialList");
-const categorias = {
-  gerais: [ apps.instagram, apps.tiktok, apps.threads ],
-  mensagens: [ apps.whatsapp, apps.telegram ],
-  video: [ apps.youtube ]
-};
-
-categorias[categoria]?.forEach(social => {
-  const btn = document.createElement("button");
-  btn.innerText = social.nome;
-  btn.onclick = () => abrirApp(social);
-  socialList.appendChild(btn);
-});
-</script>
 </body>
 </html>
