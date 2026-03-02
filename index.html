@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,105 +8,37 @@
 </head>
 <body>
 
-<header class="top">
+<header>
   <h1>Social Hub</h1>
-  <p>Todas as tuas redes, num só lugar</p>
+  <div id="info">
+    <span id="dataHora"></span>
+    <span id="cidade"></span>
+  </div>
 </header>
 
-<section class="info-bar">
-  <div id="data"></div>
-  <div id="hora"></div>
-  <div id="localizacao">A localizar...</div>
-</section>
-
-<section class="section destaque">
-  <h2>🔥 App da moda hoje</h2>
-  <div id="appModa" class="highlight-card" onclick="abrirAppModa()"></div>
-</section>
-
-<section class="section">
-  <h2>⭐ Apps sugeridas</h2>
-  <div class="cards">
-    <div class="card" onclick="abrirCategoria('gerais')">Instagram</div>
-    <div class="card" onclick="abrirCategoria('mensagens')">WhatsApp</div>
-    <div class="card" onclick="abrirCategoria('videos')">YouTube</div>
+<section>
+  <h2>Apps da moda 🔥</h2>
+  <div class="grid">
+    <button onclick="abrirApp('instagram')">Instagram</button>
+    <button onclick="abrirApp('tiktok')">TikTok</button>
+    <button onclick="abrirApp('threads')">Threads</button>
   </div>
 </section>
 
-<section class="section">
-  <h2>📂 Categorias</h2>
-  <div class="categories">
-    <div class="category" onclick="abrirCategoria('gerais')">Amigos / Gerais</div>
-    <div class="category" onclick="abrirCategoria('profissionais')">Profissionais</div>
-    <div class="category" onclick="abrirCategoria('videos')">Vídeos</div>
-    <div class="category" onclick="abrirCategoria('fotos')">Fotos</div>
-    <div class="category" onclick="abrirCategoria('mensagens')">Mensagens</div>
-    <div class="category" onclick="abrirCategoria('microblogging')">Microblogging</div>
-    <div class="category" onclick="abrirCategoria('nichos')">Nicho / Interesses</div>
-    <div class="category" onclick="abrirCategoria('regionais')">Regionais</div>
+<section>
+  <h2>Categorias</h2>
+  <div class="grid">
+    <button onclick="abrirCategoria('mensagens')">Mensagens</button>
+    <button onclick="abrirCategoria('redes')">Redes Sociais</button>
+    <button onclick="abrirCategoria('video')">Vídeo</button>
+    <button onclick="abrirCategoria('trabalho')">Trabalho</button>
+    <button onclick="abrirCategoria('gaming')">Gaming</button>
+    <button onclick="abrirCategoria('compras')">Compras</button>
+    <button onclick="abrirCategoria('dating')">Dating</button>
+    <button onclick="abrirCategoria('outros')">Outros</button>
   </div>
 </section>
-
-<footer>
-  <button onclick="alert('Meteorologia em breve 🌦️')">Meteorologia</button>
-</footer>
 
 <script src="script.js"></script>
-<script>
-/* =====================
-   DATA & HORA
-===================== */
-function atualizarHora() {
-  const agora = new Date();
-  document.getElementById("hora").innerText =
-    agora.toLocaleTimeString("pt-PT", { hour: '2-digit', minute: '2-digit' });
-  document.getElementById("data").innerText =
-    agora.toLocaleDateString("pt-PT", { weekday: 'long', day: 'numeric', month: 'long' });
-}
-atualizarHora();
-setInterval(atualizarHora, 1000);
-
-/* =====================
-   APP DA MODA
-===================== */
-const appsModa = [
-  { nome: "Instagram", link: "category.html?cat=gerais" },
-  { nome: "TikTok", link: "category.html?cat=gerais" },
-  { nome: "WhatsApp", link: "category.html?cat=mensagens" },
-  { nome: "Telegram", link: "category.html?cat=mensagens" },
-  { nome: "YouTube", link: "category.html?cat=videos" },
-  { nome: "Facebook", link: "category.html?cat=gerais" }
-];
-
-const hoje = new Date().getDate();
-const appModaHoje = appsModa[hoje % appsModa.length];
-
-document.getElementById("appModa").innerText = appModaHoje.nome;
-
-function abrirAppModa() {
-  window.location.href = appModaHoje.link;
-}
-
-/* =====================
-   LOCALIZAÇÃO (SÓ CIDADE)
-===================== */
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(pos => {
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
-      .then(res => res.json())
-      .then(data => {
-        const cidade =
-          data.address.city ||
-          data.address.town ||
-          data.address.village ||
-          "";
-        document.getElementById("localizacao").innerText = cidade || "Localização indisponível";
-      });
-  }, () => {
-    document.getElementById("localizacao").innerText = "Localização desativada";
-  });
-}
-</script>
-
 </body>
 </html>
