@@ -1,56 +1,41 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Social Hub</title>
+  <title>Redes Sociais</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <h1>Social Hub</h1>
-  <div id="info">
-    <span id="dataHora"></span>
-    <span id="cidade"></span>
-  </div>
-</header>
+<h1 data-i18n="title"></h1>
 
 <section>
-  <h2>Apps da moda 🔥</h2>
-  <div class="grid">
-    <button onclick="abrirApp(apps.instagram)">Instagram</button>
-    <button onclick="abrirApp(apps.tiktok)">TikTok</button>
-    <button onclick="abrirApp(apps.threads)">Threads</button>
-  </div>
+  <h2 data-i18n="suggested"></h2>
+  <button class="btn">Instagram</button>
+  <button class="btn">WhatsApp</button>
+  <button class="btn">TikTok</button>
 </section>
 
 <section>
-  <h2>Categorias</h2>
-  <div class="grid">
-    <button onclick="abrirCategoria('mensagens')">Mensagens</button>
-    <button onclick="abrirCategoria('redes')">Redes Sociais</button>
-    <button onclick="abrirCategoria('video')">Vídeo</button>
-    <button onclick="abrirCategoria('trabalho')">Trabalho</button>
-    <button onclick="abrirCategoria('gaming')">Gaming</button>
-    <button onclick="abrirCategoria('compras')">Compras</button>
-    <button onclick="abrirCategoria('dating')">Dating</button>
-    <button onclick="abrirCategoria('outros')">Outros</button>
-  </div>
+  <h2 data-i18n="trending"></h2>
+  <button class="btn">Threads</button>
+  <button class="btn">BeReal</button>
 </section>
 
-<!-- MODAL SEMPRE PRESENTE -->
-<div id="modalApp" class="modal-inativo">
-  <div class="modal-box">
-    <h3>App não instalada</h3>
-    <p>Como queres continuar?</p>
-    <div class="btn-grid">
-      <button id="btnPlayStore">Play Store</button>
-      <button id="btnBrowser">Browser</button>
-    </div>
+<button class="btn" onclick="document.getElementById('langModal').classList.add('show')">
+  🌍 <span data-i18n="chooseLang"></span>
+</button>
+
+<!-- Modal Idioma -->
+<div id="langModal" class="modal">
+  <div class="modal-content">
+    <h3 data-i18n="chooseLang"></h3>
+    <button class="btn" onclick="setLanguage('pt')">Português</button>
+    <button class="btn" onclick="setLanguage('en')">English</button>
   </div>
 </div>
 
+<script src="lang.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
