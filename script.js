@@ -34,7 +34,7 @@ if (navigator.geolocation) {
 }
 
 /* ======================
-   APPS DIRETAS (SEM CATEGORIAS)
+   CONFIG APPS
 ====================== */
 const apps = {
   instagram: {
@@ -54,33 +54,50 @@ const apps = {
   }
 };
 
+let appAtual = null;
+
+/* ======================
+   ABRIR APP
+====================== */
 function abrirApp(nome) {
-  const app = apps[nome];
+  appAtual = apps[nome];
   let abriu = false;
 
   const iframe = document.createElement("iframe");
   iframe.style.display = "none";
-  iframe.src = app.scheme;
+  iframe.src = appAtual.scheme;
   document.body.appendChild(iframe);
 
   const timeout = setTimeout(() => {
     if (!abriu) {
-      const escolha = confirm(
-        "A app não está instalada.\n\nOK = Play Store\nCancelar = Browser"
-      );
-      window.location.href = escolha ? app.store : app.web;
+      mostrarModal();
     }
   }, 1200);
 
   window.addEventListener("blur", () => {
     abriu = true;
     clearTimeout(timeout);
-  });
+  }, { once: true });
 }
 
 /* ======================
-   CATEGORIAS (PLACEHOLDER)
+   MODAL
+====================== */
+function mostrarModal() {
+  document.getElementById("modal").classList.remove("hidden");
+
+  document.getElementById("btnPlayStore").onclick = () => {
+    window.location.href = appAtual.store;
+  };
+
+  document.getElementById("btnBrowser").onclick = () => {
+    window.location.href = appAtual.web;
+  };
+}
+
+/* ======================
+   CATEGORIAS (placeholder)
 ====================== */
 function abrirCategoria(cat) {
-  alert("Categoria: " + cat + "\n(implementação amanhã 😄)");
+  alert("Categoria: " + cat);
 }
