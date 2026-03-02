@@ -16,12 +16,12 @@
 <section class="info-bar">
   <div id="data"></div>
   <div id="hora"></div>
-  <div id="localizacao">📍 A localizar...</div>
+  <div id="localizacao">A localizar...</div>
 </section>
 
 <section class="section destaque">
   <h2>🔥 App da moda hoje</h2>
-  <div id="appModa" class="highlight-card"></div>
+  <div id="appModa" class="highlight-card" onclick="abrirAppModa()"></div>
 </section>
 
 <section class="section">
@@ -48,12 +48,14 @@
 </section>
 
 <footer>
-  <button onclick="alert('Meteorologia em breve 🌦️')">🌦️ Meteorologia</button>
+  <button onclick="alert('Meteorologia em breve 🌦️')">Meteorologia</button>
 </footer>
 
 <script src="script.js"></script>
 <script>
-/* DATA & HORA */
+/* =====================
+   DATA & HORA
+===================== */
 function atualizarHora() {
   const agora = new Date();
   document.getElementById("hora").innerText =
@@ -64,24 +66,44 @@ function atualizarHora() {
 atualizarHora();
 setInterval(atualizarHora, 1000);
 
-/* APP DA MODA */
-const appsModa = ["Instagram", "TikTok", "WhatsApp", "Telegram", "YouTube", "Facebook"];
-const hoje = new Date().getDate();
-document.getElementById("appModa").innerText =
-  appsModa[hoje % appsModa.length];
+/* =====================
+   APP DA MODA
+===================== */
+const appsModa = [
+  { nome: "Instagram", link: "category.html?cat=gerais" },
+  { nome: "TikTok", link: "category.html?cat=gerais" },
+  { nome: "WhatsApp", link: "category.html?cat=mensagens" },
+  { nome: "Telegram", link: "category.html?cat=mensagens" },
+  { nome: "YouTube", link: "category.html?cat=videos" },
+  { nome: "Facebook", link: "category.html?cat=gerais" }
+];
 
-/* LOCALIZAÇÃO */
+const hoje = new Date().getDate();
+const appModaHoje = appsModa[hoje % appsModa.length];
+
+document.getElementById("appModa").innerText = appModaHoje.nome;
+
+function abrirAppModa() {
+  window.location.href = appModaHoje.link;
+}
+
+/* =====================
+   LOCALIZAÇÃO (SÓ CIDADE)
+===================== */
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(pos => {
     fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
       .then(res => res.json())
       .then(data => {
-        const cidade = data.address.city || data.address.town || data.address.village || "";
-        const pais = data.address.country || "";
-        document.getElementById("localizacao").innerText = `📍 ${cidade}, ${pais}`;
+        const cidade =
+          data.address.city ||
+          data.address.town ||
+          data.address.village ||
+          "";
+        document.getElementById("localizacao").innerText = cidade || "Localização indisponível";
       });
   }, () => {
-    document.getElementById("localizacao").innerText = "📍 Localização desativada";
+    document.getElementById("localizacao").innerText = "Localização desativada";
   });
 }
 </script>
