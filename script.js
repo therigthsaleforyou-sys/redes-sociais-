@@ -43,7 +43,7 @@ const apps = {
 };
 
 /* ======================
-   ABRIR APP COM FALBACK
+   ABRIR APP COM MODAL FIXO
 ====================== */
 function abrirApp(social) {
   let abriu = false;
@@ -53,70 +53,31 @@ function abrirApp(social) {
   document.body.appendChild(iframe);
 
   const timeout = setTimeout(() => {
-    if (!abriu) mostrarModal(social);
+    if (!abriu) ativarModal(social);
   }, 1200);
 
   window.addEventListener("blur", () => {
     abriu = true;
+    desativarModal();
     clearTimeout(timeout);
   }, { once: true });
 }
 
 /* ======================
-   MODAL DINÂMICO
+   ATIVAR / DESATIVAR MODAL
 ====================== */
-function mostrarModal(social) {
-  const modal = document.createElement("div");
-  modal.id = "modalApp";
-  modal.style.position = "fixed";
-  modal.style.inset = "0";
-  modal.style.background = "rgba(0,0,0,0.6)";
-  modal.style.display = "flex";
-  modal.style.alignItems = "center";
-  modal.style.justifyContent = "center";
-  modal.style.zIndex = "999";
+function ativarModal(social) {
+  const modal = document.getElementById("modalApp");
+  modal.classList.remove("modal-inativo");
 
-  const box = document.createElement("div");
-  box.style.background = "#020617";
-  box.style.padding = "20px";
-  box.style.borderRadius = "16px";
-  box.style.width = "90%";
-  box.style.maxWidth = "320px";
-  box.style.textAlign = "center";
+  // configurar botões
+  document.getElementById("btnPlayStore").onclick = () => { desativarModal(); window.location.href = social.store; };
+  document.getElementById("btnBrowser").onclick = () => { desativarModal(); window.location.href = social.web; };
+}
 
-  const h3 = document.createElement("h3");
-  h3.innerText = "App não instalada";
-
-  const p = document.createElement("p");
-  p.innerText = "Como queres continuar?";
-
-  const btnGrid = document.createElement("div");
-  btnGrid.style.display = "grid";
-  btnGrid.style.gridTemplateColumns = "repeat(2, 1fr)";
-  btnGrid.style.gap = "10px";
-  btnGrid.style.marginTop = "10px";
-
-  const btnPlayStore = document.createElement("button");
-  btnPlayStore.innerText = "Play Store";
-  btnPlayStore.onclick = () => {
-    document.body.removeChild(modal);
-    window.location.href = social.store;
-  };
-
-  const btnBrowser = document.createElement("button");
-  btnBrowser.innerText = "Browser";
-  btnBrowser.onclick = () => {
-    document.body.removeChild(modal);
-    window.location.href = social.web;
-  };
-
-  btnGrid.appendChild(btnPlayStore);
-  btnGrid.appendChild(btnBrowser);
-  box.appendChild(h3);
-  box.appendChild(p);
-  box.appendChild(btnGrid);
-  modal.appendChild(box);
-  document.body.appendChild(modal);
+function desativarModal() {
+  const modal = document.getElementById("modalApp");
+  modal.classList.add("modal-inativo");
 }
 
 /* ======================
