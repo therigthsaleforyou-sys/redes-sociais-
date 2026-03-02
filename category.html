@@ -13,30 +13,33 @@
 </header>
 
 <main id="socialList" class="grid">
-  <!-- Botões serão carregados via script.js -->
+  <!-- Botões carregados via script.js -->
 </main>
+
+<!-- MODAL SEMPRE PRESENTE -->
+<div id="modalApp" class="modal-inativo">
+  <div class="modal-box">
+    <h3>App não instalada</h3>
+    <p>Como queres continuar?</p>
+    <div class="btn-grid">
+      <button id="btnPlayStore">Play Store</button>
+      <button id="btnBrowser">Browser</button>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 <script>
-/* CATEGORIA DINÂMICA */
+/* Categoria dinâmica */
 const params = new URLSearchParams(window.location.search);
 const categoria = params.get("cat") || "gerais";
 document.getElementById("tituloCategoria").innerText = categoria.toUpperCase();
 
 const socialList = document.getElementById("socialList");
 const categorias = {
-  gerais: [
-    apps.instagram,
-    apps.tiktok,
-    apps.threads
-  ],
-  mensagens: [
-    apps.whatsapp,
-    apps.telegram
-  ],
-  video: [
-    apps.youtube
-  ]
+  gerais: [ apps.instagram, apps.tiktok, apps.threads ],
+  mensagens: [ apps.whatsapp, apps.telegram ],
+  video: [ apps.youtube ]
 };
 
 categorias[categoria]?.forEach(social => {
