@@ -8,61 +8,84 @@
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="top">
-    <h1>Social Hub</h1>
-    <p>Todas as tuas redes, num só lugar</p>
-  </header>
+<header class="top">
+  <h1>Social Hub</h1>
+  <p>Todas as tuas redes, num só lugar</p>
+</header>
 
-  <!-- INFO BAR -->
-  <section class="info-bar">
-    <div id="data"></div>
-    <div id="hora"></div>
-  </section>
+<section class="info-bar">
+  <div id="data"></div>
+  <div id="hora"></div>
+  <div id="localizacao">📍 A localizar...</div>
+</section>
 
-  <!-- APPS EM DESTAQUE -->
-  <section class="section">
-    <h2>🔥 Em destaque</h2>
-    <div class="cards">
-      <div class="card">Instagram</div>
-      <div class="card">TikTok</div>
-      <div class="card">WhatsApp</div>
-    </div>
-  </section>
+<section class="section destaque">
+  <h2>🔥 App da moda hoje</h2>
+  <div id="appModa" class="highlight-card"></div>
+</section>
 
-  <!-- CATEGORIAS -->
-  <section class="section">
-    <h2>📂 Categorias</h2>
-    <div class="categories">
-      <div class="category" onclick="abrirCategoria('gerais')">Amigos / Gerais</div>
-      <div class="category" onclick="abrirCategoria('profissionais')">Profissionais</div>
-      <div class="category" onclick="abrirCategoria('videos')">Vídeos</div>
-      <div class="category" onclick="abrirCategoria('fotos')">Fotos</div>
-      <div class="category" onclick="abrirCategoria('mensagens')">Mensagens</div>
-      <div class="category" onclick="abrirCategoria('microblogging')">Microblogging</div>
-      <div class="category" onclick="abrirCategoria('nichos')">Nicho / Interesses</div>
-      <div class="category" onclick="abrirCategoria('regionais')">Regionais</div>
-    </div>
-  </section>
+<section class="section">
+  <h2>⭐ Apps sugeridas</h2>
+  <div class="cards">
+    <div class="card">Instagram</div>
+    <div class="card">WhatsApp</div>
+    <div class="card">TikTok</div>
+    <div class="card">YouTube</div>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    <button onclick="alert('Meteorologia em breve 🌦️')">🌦️ Meteorologia</button>
-  </footer>
+<section class="section">
+  <h2>📂 Categorias</h2>
+  <div class="categories">
+    <div class="category" onclick="abrirCategoria('gerais')">Amigos / Gerais</div>
+    <div class="category" onclick="abrirCategoria('profissionais')">Profissionais</div>
+    <div class="category" onclick="abrirCategoria('videos')">Vídeos</div>
+    <div class="category" onclick="abrirCategoria('fotos')">Fotos</div>
+    <div class="category" onclick="abrirCategoria('mensagens')">Mensagens</div>
+    <div class="category" onclick="abrirCategoria('microblogging')">Microblogging</div>
+    <div class="category" onclick="abrirCategoria('nichos')">Nicho / Interesses</div>
+    <div class="category" onclick="abrirCategoria('regionais')">Regionais</div>
+  </div>
+</section>
 
-  <script src="script.js"></script>
-  <script>
-    function atualizarHora() {
-      const agora = new Date();
-      document.getElementById("hora").innerText =
-        agora.toLocaleTimeString("pt-PT", { hour: '2-digit', minute: '2-digit' });
-      document.getElementById("data").innerText =
-        agora.toLocaleDateString("pt-PT", { weekday: 'long', day: 'numeric', month: 'long' });
-    }
+<footer>
+  <button onclick="alert('Meteorologia em breve 🌦️')">🌦️ Meteorologia</button>
+</footer>
 
-    atualizarHora();
-    setInterval(atualizarHora, 1000);
-  </script>
+<script src="script.js"></script>
+<script>
+  /* DATA & HORA */
+  function atualizarHora() {
+    const agora = new Date();
+    document.getElementById("hora").innerText =
+      agora.toLocaleTimeString("pt-PT", { hour: '2-digit', minute: '2-digit' });
+    document.getElementById("data").innerText =
+      agora.toLocaleDateString("pt-PT", { weekday: 'long', day: 'numeric', month: 'long' });
+  }
+  atualizarHora();
+  setInterval(atualizarHora, 1000);
+
+  /* APP DA MODA */
+  const appsModa = ["Instagram", "TikTok", "WhatsApp", "Telegram", "YouTube", "Facebook"];
+  const hoje = new Date().getDate();
+  document.getElementById("appModa").innerText =
+    appsModa[hoje % appsModa.length];
+
+  /* LOCALIZAÇÃO */
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
+        .then(res => res.json())
+        .then(data => {
+          const cidade = data.address.city || data.address.town || data.address.village || "";
+          const pais = data.address.country || "";
+          document.getElementById("localizacao").innerText = `📍 ${cidade}, ${pais}`;
+        });
+    }, () => {
+      document.getElementById("localizacao").innerText = "📍 Localização desativada";
+    });
+  }
+</script>
 
 </body>
 </html>
