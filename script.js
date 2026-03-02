@@ -97,14 +97,14 @@ function mostrarModal(social) {
   const btnPlayStore = document.createElement("button");
   btnPlayStore.innerText = "Play Store";
   btnPlayStore.onclick = () => {
-    document.body.removeChild(modal); // remove modal antes de redirecionar
+    document.body.removeChild(modal);
     window.location.href = social.store;
   };
 
   const btnBrowser = document.createElement("button");
   btnBrowser.innerText = "Browser";
   btnBrowser.onclick = () => {
-    document.body.removeChild(modal); // remove modal antes de redirecionar
+    document.body.removeChild(modal);
     window.location.href = social.web;
   };
 
