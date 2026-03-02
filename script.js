@@ -51,12 +51,6 @@ const apps = {
     web: "https://www.tiktok.com",
     store: "https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically"
   },
-  threads: {
-    id: "threads",
-    app: "threads://",
-    web: "https://www.threads.net",
-    store: "https://play.google.com/store/apps/details?id=com.instagram.barcelona"
-  },
   whatsapp: {
     id: "whatsapp",
     app: "whatsapp://",
@@ -66,44 +60,53 @@ const apps = {
 };
 
 /* ======================
-   ABRIR APP
+   ABRIR APP (EDGE SAFE)
 ====================== */
 function abrirApp(social) {
-  const pref = localStorage.getItem("pref_" + social.id);
+  const pref =
+    localStorage.getItem("pref_" + social.id) ||
+    sessionStorage.getItem("pref_" + social.id);
+
   let abriu = false;
 
-  // tenta abrir a app
+  // tenta abrir app
   const iframe = document.createElement("iframe");
   iframe.style.display = "none";
   iframe.src = social.app;
   document.body.appendChild(iframe);
 
+  const onVisibility = () => {
+    if (document.hidden) {
+      abriu = true;
+      limpar();
+    }
+  };
+
+  document.addEventListener("visibilitychange", onVisibility);
+
   const timer = setTimeout(() => {
     if (abriu) return;
 
-    // preferência já existe → NÃO mostra modal
     if (pref === "browser") {
       window.location.href = social.web;
+      limpar();
       return;
     }
+
     if (pref === "store") {
       window.location.href = social.store;
+      limpar();
       return;
     }
 
-    // sem preferência → mostra modal
     ativarModal(social);
-  }, 1200);
+  }, 1500);
 
-  window.addEventListener(
-    "blur",
-    () => {
-      abriu = true;
-      clearTimeout(timer);
-      desativarModal();
-    },
-    { once: true }
-  );
+  function limpar() {
+    clearTimeout(timer);
+    document.removeEventListener("visibilitychange", onVisibility);
+    desativarModal();
+  }
 }
 
 /* ======================
@@ -114,19 +117,21 @@ function ativarModal(social) {
   modal.classList.remove("modal-inativo");
 
   document.getElementById("btnBrowser").onclick = () => {
+    sessionStorage.setItem("pref_" + social.id, "browser");
     localStorage.setItem("pref_" + social.id, "browser");
     desativarModal();
     setTimeout(() => {
       window.location.href = social.web;
-    }, 150);
+    }, 200);
   };
 
   document.getElementById("btnPlayStore").onclick = () => {
+    sessionStorage.setItem("pref_" + social.id, "store");
     localStorage.setItem("pref_" + social.id, "store");
     desativarModal();
     setTimeout(() => {
       window.location.href = social.store;
-    }, 150);
+    }, 200);
   };
 }
 
