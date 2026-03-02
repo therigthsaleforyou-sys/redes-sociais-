@@ -46,23 +46,18 @@ const apps = {
    ABRIR APP COM FALBACK
 ====================== */
 function abrirApp(social) {
-  const now = Date.now();
-  let opened = false;
-
-  // criar iframe invisível para tentar abrir URI
+  let abriu = false;
   const iframe = document.createElement("iframe");
   iframe.style.display = "none";
   iframe.src = social.app;
   document.body.appendChild(iframe);
 
-  // fallback: se não abriu em 1200ms, mostrar modal
   const timeout = setTimeout(() => {
-    if (!opened) mostrarModal(social);
+    if (!abriu) mostrarModal(social);
   }, 1200);
 
-  // se o browser perder foco (usuário abriu app), consideramos que abriu
   window.addEventListener("blur", () => {
-    opened = true;
+    abriu = true;
     clearTimeout(timeout);
   }, { once: true });
 }
