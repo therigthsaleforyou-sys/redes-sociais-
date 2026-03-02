@@ -7,22 +7,62 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
+
+  <!-- HEADER -->
+  <header class="top">
     <h1>Social Hub</h1>
-    <p>Escolhe uma categoria para acessar suas redes sociais</p>
+    <p>Todas as tuas redes, num só lugar</p>
   </header>
 
-  <main class="categories">
-    <div class="category" onclick="abrirCategoria('gerais')">Amigos / Gerais</div>
-    <div class="category" onclick="abrirCategoria('profissionais')">Profissionais</div>
-    <div class="category" onclick="abrirCategoria('videos')">Vídeos</div>
-    <div class="category" onclick="abrirCategoria('fotos')">Fotos / Multimídia</div>
-    <div class="category" onclick="abrirCategoria('mensagens')">Mensagens / Chats</div>
-    <div class="category" onclick="abrirCategoria('microblogging')">Microblogging</div>
-    <div class="category" onclick="abrirCategoria('nichos')">Nicho / Interesses</div>
-    <div class="category" onclick="abrirCategoria('regionais')">Regionais</div>
-  </main>
+  <!-- INFO BAR -->
+  <section class="info-bar">
+    <div id="data"></div>
+    <div id="hora"></div>
+  </section>
+
+  <!-- APPS EM DESTAQUE -->
+  <section class="section">
+    <h2>🔥 Em destaque</h2>
+    <div class="cards">
+      <div class="card">Instagram</div>
+      <div class="card">TikTok</div>
+      <div class="card">WhatsApp</div>
+    </div>
+  </section>
+
+  <!-- CATEGORIAS -->
+  <section class="section">
+    <h2>📂 Categorias</h2>
+    <div class="categories">
+      <div class="category" onclick="abrirCategoria('gerais')">Amigos / Gerais</div>
+      <div class="category" onclick="abrirCategoria('profissionais')">Profissionais</div>
+      <div class="category" onclick="abrirCategoria('videos')">Vídeos</div>
+      <div class="category" onclick="abrirCategoria('fotos')">Fotos</div>
+      <div class="category" onclick="abrirCategoria('mensagens')">Mensagens</div>
+      <div class="category" onclick="abrirCategoria('microblogging')">Microblogging</div>
+      <div class="category" onclick="abrirCategoria('nichos')">Nicho / Interesses</div>
+      <div class="category" onclick="abrirCategoria('regionais')">Regionais</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <button onclick="alert('Meteorologia em breve 🌦️')">🌦️ Meteorologia</button>
+  </footer>
 
   <script src="script.js"></script>
+  <script>
+    function atualizarHora() {
+      const agora = new Date();
+      document.getElementById("hora").innerText =
+        agora.toLocaleTimeString("pt-PT", { hour: '2-digit', minute: '2-digit' });
+      document.getElementById("data").innerText =
+        agora.toLocaleDateString("pt-PT", { weekday: 'long', day: 'numeric', month: 'long' });
+    }
+
+    atualizarHora();
+    setInterval(atualizarHora, 1000);
+  </script>
+
 </body>
 </html>
