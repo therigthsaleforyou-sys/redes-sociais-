@@ -42,3 +42,35 @@ button {
 button:active {
   background: #334155;
 }
+
+/* MODAL */
+#modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-box {
+  background: #020617;
+  padding: 20px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 320px;
+  text-align: center;
+}
+
+.modal-box h3 {
+  margin-top: 0;
+}
+
+.modal-box .grid {
+  grid-template-columns: repeat(2, 1fr);
+}
