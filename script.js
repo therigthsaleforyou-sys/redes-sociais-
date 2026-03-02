@@ -18,11 +18,15 @@ if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(async pos => {
     const lat = pos.coords.latitude;
     const lon = pos.coords.longitude;
-    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-    const data = await res.json();
-    const cidade = data.address.city || data.address.town || data.address.village || "";
-    const cidadeEl = document.getElementById("cidade");
-    if(cidadeEl) cidadeEl.innerText = cidade;
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+      const data = await res.json();
+      const cidade = data.address.city || data.address.town || data.address.village || data.address.county || "Desconhecido";
+      const cidadeEl = document.getElementById("cidade");
+      if(cidadeEl) cidadeEl.innerText = cidade;
+    } catch(e) {
+      console.error("Erro ao obter cidade:", e);
+    }
   });
 }
 
@@ -61,6 +65,7 @@ function abrirApp(social) {
 function mostrarModal(social) {
   // criar modal dinamicamente
   const modal = document.createElement("div");
+  modal.id = "modalApp";
   modal.style.position = "fixed";
   modal.style.inset = "0";
   modal.style.background = "rgba(0,0,0,0.6)";
@@ -91,11 +96,17 @@ function mostrarModal(social) {
 
   const btnPlayStore = document.createElement("button");
   btnPlayStore.innerText = "Play Store";
-  btnPlayStore.onclick = () => window.location.href = social.store;
+  btnPlayStore.onclick = () => {
+    document.body.removeChild(modal); // remove modal antes de redirecionar
+    window.location.href = social.store;
+  };
 
   const btnBrowser = document.createElement("button");
   btnBrowser.innerText = "Browser";
-  btnBrowser.onclick = () => window.location.href = social.web;
+  btnBrowser.onclick = () => {
+    document.body.removeChild(modal); // remove modal antes de redirecionar
+    window.location.href = social.web;
+  };
 
   btnGrid.appendChild(btnPlayStore);
   btnGrid.appendChild(btnBrowser);
