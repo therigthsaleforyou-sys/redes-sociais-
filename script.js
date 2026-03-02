@@ -43,27 +43,34 @@ const apps = {
 };
 
 /* ======================
-   ABRIR APP COM MODAL DINÂMICO
+   ABRIR APP COM FALBACK
 ====================== */
 function abrirApp(social) {
-  let abriu = false;
+  const now = Date.now();
+  let opened = false;
+
+  // criar iframe invisível para tentar abrir URI
   const iframe = document.createElement("iframe");
   iframe.style.display = "none";
   iframe.src = social.app;
   document.body.appendChild(iframe);
 
+  // fallback: se não abriu em 1200ms, mostrar modal
   const timeout = setTimeout(() => {
-    if (!abriu) mostrarModal(social);
+    if (!opened) mostrarModal(social);
   }, 1200);
 
+  // se o browser perder foco (usuário abriu app), consideramos que abriu
   window.addEventListener("blur", () => {
-    abriu = true;
+    opened = true;
     clearTimeout(timeout);
   }, { once: true });
 }
 
+/* ======================
+   MODAL DINÂMICO
+====================== */
 function mostrarModal(social) {
-  // criar modal dinamicamente
   const modal = document.createElement("div");
   modal.id = "modalApp";
   modal.style.position = "fixed";
